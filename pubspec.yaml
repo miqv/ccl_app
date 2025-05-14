@@ -1,82 +1,95 @@
+# Nombre del proyecto
 name: ccl_app
-description: "A new Flutter project."
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-# In Windows, build-name is used as the major, minor, and patch parts
-# of the product and file versions while build-number is used as the build suffix.
+# Descripción corta del proyecto
+description: "A new Flutter project."
+
+# Evita que se publique accidentalmente en pub.dev
+publish_to: 'none'
+
+# Versión de la app: major.minor.patch+build
 version: 1.0.0+1
 
+# SDK mínimo requerido
 environment:
   sdk: ^3.6.0
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
 
+  # Iconos estilo iOS
   cupertino_icons: ^1.0.8
+
+  # Internacionalización fácil (traducciones)
+  easy_localization: ^3.0.7+1
+
+  # Navegación declarativa con generación de rutas
+  auto_route: ^10.0.1
+
+  # Inyección de dependencias (service locator)
+  get_it: ^8.0.3
+
+  # Complemento para get_it: generación automática
+  injectable: ^2.5.0
+
+  # Comparaciones por valor (ideal para estados)
+  equatable: ^2.0.7
+
+  # Manejo de estados con BLoC
+  flutter_bloc: ^9.1.0
+
+  # Programación funcional: Either, Option, etc.
+  dartz: ^0.10.1
+
+  # Pantalla de splash nativa automática
+  flutter_native_splash: ^2.4.4
+
+  # Acceso a rutas del sistema (documentos, etc.)
+  path_provider: ^2.1.5
+
+  # SQLite: base de datos local
+  sqflite: ^2.4.1
+
+  # Snackbars personalizados con contenido visual atractivo
+  awesome_snackbar_content: ^0.1.5
+
+  # Funciones de hash y seguridad (ej. para contraseñas)
+  crypto: ^3.0.6
+
+  # Framework de mocking para pruebas
+  mocktail: ^1.0.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Generador para auto_route
+  auto_route_generator: ^10.0.1
+
+  # Utilidades para pruebas de BLoC
+  bloc_test: ^10.0.0
+
+  # Motor de generación de código para injectable y auto_route
+  build_runner:
+
+  # Reglas de linting recomendadas por Flutter
   flutter_lints: ^5.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+  # Generador para injectable
+  injectable_generator:
 
-# The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
+  # Usa el conjunto de íconos Material
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
+  # Recursos de imágenes y base de datos
   assets:
     - assets/images/
     - assets/database/
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
+  # (Opcional) Puedes agregar fuentes personalizadas aquí.
   # fonts:
-  #   - family: Schyler
+  #   - family: MiFuente
   #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+  #       - asset: fonts/MiFuente-Regular.ttf
