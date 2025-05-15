@@ -7,14 +7,18 @@ Aplicación de gestión de inventario en Flutter
 ``` javascript
  flutter pub get
 ```
-2. Después de ejecutar la configuración del paquete, ejecute lo siguiente para configurar la pantalla de bienvenida:
+2. Después ejecute lo siguiente para configurar la pantalla de bienvenida:
 ``` javascript
  flutter pub run flutter_native_splash:create --path=native_splash.yaml
 ```
 
-3. Después de ejecutar la configuración de la pantalla de bienvenida, ejecute lo siguiente para crear las rutas y las inyecciones:
+3. Después ejecute lo siguiente para crear las rutas y las inyecciones:
 ``` javascript
   flutter packages pub run build_runner build 
+```
+4. Después de ejecutar la carga del icono de la aplicación:
+``` javascript
+  flutter pub run flutter_launcher_icons 
 ```
 
 ## OS
@@ -42,3 +46,4 @@ Español
 12. awesome_snackbar_content
 13. crypto
 14. mocktail
+15. dropdown_search

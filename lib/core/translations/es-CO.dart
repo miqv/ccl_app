@@ -7,6 +7,7 @@ Map<String, dynamic> esCO = {
   ..._register,
   ..._products,
   ..._navigation,
+  ..._inventory,
 };
 
 Map<String, dynamic> _general = {
@@ -68,4 +69,23 @@ Map<String, dynamic> _products = {
 Map<String, dynamic> _navigation = {
   LocaleKeys.navigation.titleProducts: 'Productos',
   LocaleKeys.navigation.titleInputOutput: 'Entradas / Salidas',
+};
+
+Map<String, dynamic> _inventory = {
+  LocaleKeys.inventory.labelTextSearch: 'Buscar Descripción ...',
+  LocaleKeys.inventory.noResultsFound: 'No se encontraron resultados',
+  LocaleKeys.inventory.titleAdd: 'Registro de mercancia',
+  LocaleKeys.inventory.productFieldLabel: 'Producto',
+  LocaleKeys.inventory.productSearchFieldLabel: 'Buscar producto',
+  LocaleKeys.inventory.productFieldError: 'Seleccione un producto',
+  LocaleKeys.inventory.quantityFieldLabel: 'Cantidad',
+  LocaleKeys.inventory.quantityFieldError: 'Ingrese cantidad',
+  LocaleKeys.inventory.descriptionFieldLabel: 'Descripción',
+  LocaleKeys.inventory.descriptionFieldError: 'Ingrese Descripción',
+  LocaleKeys.inventory.menuItemInput: 'Entrada',
+  LocaleKeys.inventory.menuItemOutput: 'Salida',
+  LocaleKeys.inventory.movementFieldLabel: 'Tipo de movimiento',
+  LocaleKeys.inventory.movementFieldError: 'Seleccione tipo de movimiento',
+  LocaleKeys.inventory.stockAvailableError: 'No hay stock de este producto, actualmente queda {} en stock',
+  LocaleKeys.inventory.addInventorySuccess: 'Se creo correctamente esta {}',
 };

@@ -28,6 +28,8 @@ class ProductsCubit extends Cubit<ProductsState> {
   final GetProductsSearchUseCase _getProductsSearchUseCase;
   final AddProductUseCase _addProductUseCase;
 
+  String _query = "";
+
   /// Starts the cubit by loading all products initially.
   Future<void> start() async {
     _loadProducts();
@@ -48,7 +50,11 @@ class ProductsCubit extends Cubit<ProductsState> {
           if (r.isEmpty) {
             emit(ProductsNoResultsFound()); // No products found.
           } else {
-            emit(ProductsSuccess(r)); // Successfully retrieved products.
+            if(_query.isNotEmpty){
+              search(_query);
+            }else{
+              emit(ProductsSuccess(r)); // Successfully retrieved products.
+            }
           }
         } catch (e) {
           emit(ProductsFailure(errorMessage: 'An error occurred'));
@@ -59,11 +65,12 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   /// Searches products using the given query string.
   void search(String query) async {
+    _query = query;
     emit(ProductsLoading()); // Show loading during search.
 
     try {
       Either<Failure, List<Product>> result =
-          await _getProductsSearchUseCase(query);
+          await _getProductsSearchUseCase(_query);
 
       result.fold(
         // Emit error if search fails.

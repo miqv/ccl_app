@@ -31,5 +31,13 @@ class NavigationCubit extends Cubit<NavigationState> {
   Future<void> start() async {
     emit(NavigationInit());
   }
+
+  void reloadProductsTab() {
+    emit(NavigationReload(tab: NavigationTab.products));
+  }
+
+  void reloadInventoryTab() {
+    emit(NavigationReload(tab: NavigationTab.inventory));
+  }
 }
 

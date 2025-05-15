@@ -38,6 +38,11 @@ class AppRouter extends RootStackRouter {
       page: RegisterScreenRoute.page,
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),
+    CustomRoute(
+      path: '/inventoryFormRoute',
+      page: InventoryFormRoute.page,
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+    ),
     AutoRoute(
       path: '/navigation',
       page: NavigationScreenRoute.page,
@@ -45,6 +50,11 @@ class AppRouter extends RootStackRouter {
         CustomRoute(
           path: 'products',
           page: ProductsScreenRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+        ),
+        CustomRoute(
+          path: 'inventory',
+          page: InventoryScreenRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
         ),
       ],

@@ -31,30 +31,38 @@ class NavigationScreen extends StatelessWidget {
       child: BlocConsumer<NavigationCubit, NavigationState>(
         listener: (BuildContext context, NavigationState state) {
           if (state is NavigationInit) return;
-
-          if (state is NavigationSelected) {
-            selectedIndex = state.selectedIndex;
-            switch (selectedIndex) {
-              case 0:
-                title = LocaleKeys.navigation.titleProducts.tr();
-                break;
-              case 1:
-                title = LocaleKeys.navigation.titleInputOutput.tr();
-                break;
-            }
-          }
         },
         builder: (context, state) {
           return AutoTabsScaffold(
-            appBarBuilder: (_, tabsRouter) => AppBar(
-              leadingWidth: 0,
-              leading: Container(),
-              centerTitle: true,
-              title: Text(title),
-            ),
+            appBarBuilder: (_, tabsRouter) {
+              String title;
+              final state = context.watch<NavigationCubit>().state;
+
+              if (state is NavigationSelected) {
+                switch (state.selectedIndex) {
+                  case 0:
+                    title = LocaleKeys.navigation.titleProducts.tr();
+                    break;
+                  case 1:
+                    title = LocaleKeys.navigation.titleInputOutput.tr();
+                    break;
+                  default:
+                    title = '';
+                }
+              } else {
+                title = LocaleKeys.navigation.titleProducts.tr(); // default
+              }
+
+              return AppBar(
+                leadingWidth: 0,
+                leading: Container(),
+                centerTitle: true,
+                title: Text(title),
+              );
+            },
             routes: const [
               ProductsScreenRoute(),
-              ProductsScreenRoute(), // TODO: next commit
+              InventoryScreenRoute(),
             ],
             bottomNavigationBuilder: (_, tabsRouter) {
               return BlocBuilder<NavigationCubit, NavigationState>(
@@ -77,7 +85,16 @@ class NavigationScreen extends StatelessWidget {
                       ],
                       currentIndex: tabsRouter.activeIndex,
                       onTap: (index) {
+                        switch (index) {
+                          case 0:
+                            context.read<NavigationCubit>().reloadProductsTab();
+                            break;
+                          case 1:
+                            context.read<NavigationCubit>().reloadInventoryTab();
+                            break;
+                        }
                         tabsRouter.setActiveIndex(index);
+                        context.read<NavigationCubit>().setSelectIndex(index);
                         context.read<NavigationCubit>().setSelectIndex(index);
                       },
                     ),

@@ -47,6 +47,7 @@ class _LoginScreenState extends State<_LoginScreen> {
 
   @override
   void dispose() {
+    FocusManager.instance.primaryFocus?.unfocus();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -120,7 +121,6 @@ class _LoginScreenState extends State<_LoginScreen> {
       decoration: InputDecoration(
         labelText: LocaleKeys.login.labelTextEmail.tr(),
         hintText: LocaleKeys.login.hintTextEmail.tr(),
-        border: const OutlineInputBorder(),
       ),
     );
   }

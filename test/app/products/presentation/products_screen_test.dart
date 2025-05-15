@@ -1,3 +1,4 @@
+import 'package:ccl_app/app/navigation/bloc/navigation_cubit.dart';
 import 'package:ccl_app/app/products/bloc/products_cubit.dart';
 import 'package:ccl_app/app/products/presentation/products_screen.dart';
 import 'package:ccl_app/core/di/injection.dart';
@@ -17,11 +18,16 @@ import '../../../core/utils.dart';
 class MockedProductsCubit extends MockCubit<ProductsState>
     implements ProductsCubit {}
 
+/// A mock class for NavigationCubit using mocktail.
+class MockedNavigationCubit extends MockCubit<NavigationState>
+    implements NavigationCubit {}
+
 /// A fallback fake class for ProductsState to avoid type errors in tests.
 class FakedProductsState extends Fake implements ProductsState {}
 
 void main() async {
   late ProductsCubit cubit;
+  late NavigationCubit cubitNavigation;
   late Widget testableWidget;
 
   // Initialize EasyLocalization before running tests
@@ -35,17 +41,33 @@ void main() async {
   /// Prepares the test widget by injecting a mocked ProductsCubit
   void initMainWidget() {
     cubit = MockedProductsCubit();
-    when(() => cubit.start()).thenAnswer((_) => Future.value());
+    cubitNavigation = MockedNavigationCubit();
 
-    // Override the dependency injection for ProductsCubit with the mocked instance
+    // Initial state for both cubits
+    when(() => cubit.state).thenReturn(ProductsLoading());
+    when(() => cubit.start()).thenAnswer((_) async {});
+    when(() => cubitNavigation.state).thenReturn(NavigationInit());
+
+    // Register mock dependencies
     GetItHelper(GetIt.instance).factory<ProductsCubit>(() => cubit);
+    GetItHelper(GetIt.instance).factory<NavigationCubit>(() => cubitNavigation);
 
-    // Wrap the widget with localization and dependencies
     testableWidget = makeTestableWidget(
       child: Scaffold(
-        body: BlocProvider(
-          create: (_) => getIt<ProductsCubit>(),
-          child: const ProductsScreen(),
+        body: MultiBlocProvider(
+          providers: [
+            BlocProvider<ProductsCubit>(create: (_) => getIt<ProductsCubit>()),
+            BlocProvider<NavigationCubit>(create: (_) => getIt<NavigationCubit>()),
+          ],
+          child: BlocListener<NavigationCubit, NavigationState>(
+            listener: (context, state) {
+              if (state is NavigationReload &&
+                  state.tab == NavigationTab.products) {
+                context.read<ProductsCubit>().start();
+              }
+            },
+            child: const ProductsScreen(),
+          ),
         ),
       ),
     );

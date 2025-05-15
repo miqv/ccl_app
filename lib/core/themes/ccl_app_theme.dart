@@ -61,6 +61,24 @@ class CclAppThemeData {
         textStyle: const TextStyle(fontWeight: FontWeight.w600),
       ),
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Color(0xFFF5F7FA), // superficie clara
+      labelStyle: TextStyle(color: Color(0xFF0A1D37)),
+      hintStyle: TextStyle(color: Colors.black45),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.black26),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.black26),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Color(0xFF0A1D37), width: 2),
+      ),
+    ),
   );
 
   /// Dark theme configuration.
@@ -113,6 +131,24 @@ class CclAppThemeData {
       style: TextButton.styleFrom(
         foregroundColor: Colors.white,
         textStyle: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Color(0xFF1E1E1E), // superficie oscura
+      labelStyle: TextStyle(color: Colors.white),
+      hintStyle: TextStyle(color: Colors.white70),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.white30),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.white30),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.white, width: 2),
       ),
     ),
   );

@@ -1,3 +1,4 @@
+import 'package:ccl_app/domain/model/inventory.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ccl_app/domain/model/product.dart';
 import 'package:ccl_app/domain/model/user.dart';
@@ -44,4 +45,7 @@ class GlobalState {
 
   /// List of all products (non-persistent).
   final List<Product> products = [];
+
+  /// List of all inventories (non-persistent).
+  final List<Inventory> inventories = [];
 }

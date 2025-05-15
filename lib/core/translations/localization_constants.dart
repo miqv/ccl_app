@@ -5,6 +5,7 @@ abstract class LocaleKeys {
   static RegisterLocaleKeys register = RegisterLocaleKeys();
   static ProductsLocaleKeys products = ProductsLocaleKeys();
   static NavigationLocaleKeys navigation = NavigationLocaleKeys();
+  static InventoryLocaleKeys inventory = InventoryLocaleKeys();
 }
 
 class GeneralLocaleKeys {
@@ -43,7 +44,7 @@ class RegisterLocaleKeys {
   String get succeededMessage => '$prefix succeededMessage';
   String get failedTitle => '$prefix failedTitle';
   String get failedMessage => '$prefix failedMessage';
-  String get failedMessageExistingEmail => '$prefix FailedMessageExistingEmail';
+  String get failedMessageExistingEmail => '$prefix failedMessageExistingEmail';
   String get labelTextFirstName => '$prefix labelTextFirstName';
   String get labelTextLastName => '$prefix labelTextLastName';
   String get labelTextEmail => '$prefix labelTextEmail';
@@ -71,4 +72,25 @@ class NavigationLocaleKeys {
   static const String prefix = "navigation";
   String get titleProducts => '$prefix titleProducts';
   String get titleInputOutput => '$prefix titleInputOutput';
+}
+
+class InventoryLocaleKeys {
+  static const String prefix = "inventory";
+  String get labelTextSearch => '$prefix labelTextSearch';
+  String get noResultsFound => '$prefix noResultsFound';
+  String get titleAdd => '$prefix titleAdd';
+  String get productFieldLabel => '$prefix productFieldLabel';
+  String get productSearchFieldLabel => '$prefix productSearchFieldLabel';
+  String get productFieldError => '$prefix productFieldError';
+  String get dateFieldLabel => '$prefix dateFieldLabel';
+  String get quantityFieldLabel => '$prefix quantityFieldLabel';
+  String get quantityFieldError => '$prefix quantityFieldError';
+  String get descriptionFieldLabel => '$prefix descriptionFieldLabel';
+  String get descriptionFieldError => '$prefix descriptionFieldError';
+  String get menuItemInput => '$prefix menuItemInput';
+  String get menuItemOutput => '$prefix menuItemOutput';
+  String get movementFieldLabel => '$prefix movementFieldLabel';
+  String get movementFieldError => '$prefix movementFieldError';
+  String get stockAvailableError => '$prefix stockAvailableError';
+  String get addInventorySuccess => '$prefix addInventorySuccess';
 }

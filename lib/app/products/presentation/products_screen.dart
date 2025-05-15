@@ -1,4 +1,5 @@
 // Required imports for UI, state management, dependency injection, translations, and splash screen.
+import 'package:ccl_app/app/navigation/bloc/navigation_cubit.dart';
 import 'package:ccl_app/core/components/spacer.dart';
 import 'package:ccl_app/core/dimens.dart';
 import 'package:ccl_app/domain/model/product.dart';
@@ -19,10 +20,17 @@ class ProductsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Provides the ProductsCubit and initializes it with .start()
     return BlocProvider(
       create: (_) => getIt<ProductsCubit>()..start(),
-      child: _ProductsScreen(),
+      child: BlocListener<NavigationCubit, NavigationState>(
+        listener: (context, state) {
+          if (state is NavigationReload &&
+              state.tab == NavigationTab.products) {
+            context.read<ProductsCubit>().start();
+          }
+        },
+        child: _ProductsScreen(),
+      ),
     );
   }
 }
@@ -51,7 +59,6 @@ class _ProductsScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: LocaleKeys.products.labelTextSearch.tr(),
                       prefixIcon: const Icon(Icons.search),
-                      border: const OutlineInputBorder(),
                     ),
                   ),
                 ),
@@ -60,6 +67,7 @@ class _ProductsScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.add, color: Colors.white),
                   onPressed: () {
+                    FocusScope.of(context).unfocus();
                     showDialog(
                       context: context,
                       builder: (dialogContext) {
@@ -169,7 +177,6 @@ class _ProductsScreen extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 15,
                             fontStyle: FontStyle.italic,
-                            color: Colors.black54,
                           ),
                         ),
                       ],
@@ -193,10 +200,10 @@ class _ProductsScreen extends StatelessWidget {
   }
 
   /// Builds a single metric item (Input, Output, Stock).
-  Widget _buildInfoItem(IconData icon, String label, int value) {
+  Widget _buildInfoItem(IconData icon, String label, int value, Color? color) {
     return Column(
       children: [
-        Icon(icon, size: Dimen.medium, color: Colors.blueAccent),
+        Icon(icon, size: Dimen.medium, color: color),
         Spacing.micro,
         Text(
           '$value',
@@ -204,7 +211,7 @@ class _ProductsScreen extends StatelessWidget {
         ),
         Text(
           label,
-          style: const TextStyle(fontSize: 13, color: Colors.black54),
+          style: const TextStyle(fontSize: 13),
         ),
       ],
     );
@@ -215,12 +222,24 @@ class _ProductsScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildInfoItem(Icons.arrow_downward,
-            LocaleKeys.products.titleInput.tr(), product.input),
-        _buildInfoItem(Icons.arrow_upward, LocaleKeys.products.titleOutput.tr(),
-            product.output),
-        _buildInfoItem(Icons.inventory_2_outlined,
-            LocaleKeys.products.titleStock.tr(), product.stock),
+        _buildInfoItem(
+          Icons.arrow_downward,
+          LocaleKeys.products.titleInput.tr(),
+          product.input,
+          Colors.blueAccent,
+        ),
+        _buildInfoItem(
+          Icons.arrow_upward,
+          LocaleKeys.products.titleOutput.tr(),
+          product.output,
+          Colors.redAccent,
+        ),
+        _buildInfoItem(
+          Icons.inventory_2_outlined,
+          LocaleKeys.products.titleStock.tr(),
+          product.stock,
+          null
+        ),
       ],
     );
   }
@@ -280,7 +299,6 @@ class _ProductsScreen extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: LocaleKeys.products.addProductDescription.tr(),
                 alignLabelWithHint: true,
-                border: OutlineInputBorder(),
               ),
               validator: (value) => (value == null || value.trim().isEmpty)
                   ? LocaleKeys.products.errorProductDescription.tr()
@@ -292,7 +310,10 @@ class _ProductsScreen extends StatelessWidget {
       actions: [
         // Cancel button.
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            FocusScope.of(context).unfocus();
+            Navigator.of(context).pop();
+          },
           child: Text(LocaleKeys.general.cancel.tr()),
         ),
         // Save button, only triggers if form is valid.
@@ -304,6 +325,7 @@ class _ProductsScreen extends StatelessWidget {
                 description: descriptionController.text.trim(),
               );
               cubit.addProduct(product);
+              FocusScope.of(context).unfocus();
               Navigator.of(context).pop();
             }
           },

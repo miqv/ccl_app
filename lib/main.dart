@@ -39,12 +39,14 @@ class MyApp extends StatelessWidget {
   // Dependency-injected router using `auto_route`
   final _appRouter = getIt<AppRouter>();
 
+  final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       // Configures navigation using auto_route
       routerConfig: _appRouter.config(
-        navigatorObservers: () => [AutoRouteObserver()],
+        navigatorObservers: () => [AutoRouteObserver(), routeObserver],
       ),
 
       // Application theme definitions
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+
     );
   }
 }

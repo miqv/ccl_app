@@ -56,6 +56,7 @@ class _RegisterScreenState extends State<_RegisterScreen> {
 
   @override
   void dispose() {
+    FocusManager.instance.primaryFocus?.unfocus();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();

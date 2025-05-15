@@ -43,25 +43,36 @@ class ProductMapper {
     );
   ''';
 
-  /// SQL query to retrieve all product data along with calculated input/output stock summary.
+  /// SQL query to retrieve all products along with stock summary.
   ///
-  /// Returns:
-  /// - `id`, `name`, `description` from the `products` table
-  /// - `total_input`: Sum of all input quantities (from `input` table)
-  /// - `total_output`: Sum of all output quantities (from `output` table)
-  /// - `stock`: Difference between total input and total output
+  /// Returns the following columns:
+  /// - `id`: Product ID
+  /// - `name`: Product name
+  /// - `description`: Product description
+  /// - `total_input`: Sum of quantities from `input` table (nullable)
+  /// - `total_output`: Sum of quantities from `output` table (nullable)
+  /// - `stock`: Calculated as (total_input - total_output)
   ///
-  /// Uses `LEFT JOIN` to include products even if they have no input/output records.
+  /// Uses `LEFT JOIN` to include products with no input/output records
   String allProductInfoTableQuery = '''
     SELECT 
-    p.id, p.name, p.description,
-    IFNULL(SUM(i.quantity), 0) AS total_input,
-    IFNULL(SUM(o.quantity), 0) AS total_output,
-    (IFNULL(SUM(i.quantity), 0) - IFNULL(SUM(o.quantity), 0)) AS stock
-  FROM products p
-  LEFT JOIN input i ON p.id = i.product_id
-  LEFT JOIN output o ON p.id = o.product_id
-  GROUP BY p.id
-  ORDER BY p.name
+  p.id,
+  p.name,
+  p.description,
+  IFNULL(i.total_input, 0) AS total_input,
+  IFNULL(o.total_output, 0) AS total_output,
+  (IFNULL(i.total_input, 0) - IFNULL(o.total_output, 0)) AS stock
+FROM products p
+LEFT JOIN (
+  SELECT product_id, SUM(quantity) AS total_input
+  FROM input
+  GROUP BY product_id
+) i ON p.id = i.product_id
+LEFT JOIN (
+  SELECT product_id, SUM(quantity) AS total_output
+  FROM output
+  GROUP BY product_id
+) o ON p.id = o.product_id
+ORDER BY p.name ASC;
   ''';
 }

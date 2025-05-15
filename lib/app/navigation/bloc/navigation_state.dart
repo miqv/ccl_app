@@ -66,3 +66,10 @@ class NavigationSelected extends NavigationState {
   /// Index of the currently selected tab.
   final int selectedIndex;
 }
+
+enum NavigationTab { products, inventory }
+
+class NavigationReload extends NavigationState {
+  final NavigationTab tab;
+  NavigationReload({required this.tab});
+}
