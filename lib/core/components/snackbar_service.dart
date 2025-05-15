@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
-/// Servicio estático para mostrar `SnackBar`s personalizados utilizando
-/// el paquete `awesome_snackbar_content`.
+/// A static service to display styled `SnackBar`s across the app
+/// using the `awesome_snackbar_content` package.
 ///
-/// Este servicio permite mostrar diferentes tipos de mensajes visuales
-/// (error, éxito, advertencia, información) de forma uniforme en toda la aplicación.
+/// This service provides a consistent way to show different types
+/// of feedback messages (error, success, warning, info) in the UI.
 class SnackbarService {
-  /// Muestra un `SnackBar` personalizado con contenido dinámico.
+  /// Displays a custom [SnackBar] with styled content using [AwesomeSnackbarContent].
   ///
-  /// [context] es el `BuildContext` donde se mostrará el `SnackBar`.
-  /// [title] es el título del mensaje.
-  /// [message] es el contenido o descripción del mensaje.
-  /// [contentType] define el tipo de mensaje (`success`, `failure`, `warning`, `help`).
+  /// - [context]: The [BuildContext] used to display the `SnackBar`.
+  /// - [title]: The title of the message (e.g., "Success", "Error").
+  /// - [message]: The body content of the message.
+  /// - [contentType]: The visual type of message: `success`, `failure`, `warning`, or `help`.
   static void show(
-    BuildContext context, {
-    required String title,
-    required String message,
-    required ContentType contentType,
-  }) {
+      BuildContext context, {
+        required String title,
+        required String message,
+        required ContentType contentType,
+      }) {
     final snackBar = SnackBar(
       elevation: 0,
       behavior: SnackBarBehavior.floating,
@@ -30,13 +30,16 @@ class SnackbarService {
       ),
     );
 
-    // Limpia cualquier SnackBar previo y muestra uno nuevo.
+    // Dismisses any current SnackBar and shows a new one
     ScaffoldMessenger.of(context)
       ..clearSnackBars()
       ..showSnackBar(snackBar);
   }
 
-  /// Muestra un `SnackBar` de tipo **error** con el mensaje proporcionado.
+  /// Displays an error [SnackBar] with red styling and failure icon.
+  ///
+  /// - [context]: Context in which to display the `SnackBar`.
+  /// - [message]: The error message content.
   static void showError(BuildContext context, String message) {
     show(
       context,
@@ -46,31 +49,40 @@ class SnackbarService {
     );
   }
 
-  /// Muestra un `SnackBar` de tipo **éxito** con el mensaje proporcionado.
+  /// Displays a success [SnackBar] with green styling and success icon.
+  ///
+  /// - [context]: Context in which to display the `SnackBar`.
+  /// - [message]: The success message content.
   static void showSuccess(BuildContext context, String message) {
     show(
       context,
-      title: 'Éxito',
+      title: 'Success',
       message: message,
       contentType: ContentType.success,
     );
   }
 
-  /// Muestra un `SnackBar` de tipo **advertencia** con el mensaje proporcionado.
+  /// Displays a warning [SnackBar] with yellow styling and warning icon.
+  ///
+  /// - [context]: Context in which to display the `SnackBar`.
+  /// - [message]: The warning message content.
   static void showWarning(BuildContext context, String message) {
     show(
       context,
-      title: 'Advertencia',
+      title: 'Warning',
       message: message,
       contentType: ContentType.warning,
     );
   }
 
-  /// Muestra un `SnackBar` de tipo **información** con el mensaje proporcionado.
+  /// Displays an informational [SnackBar] with blue styling and help icon.
+  ///
+  /// - [context]: Context in which to display the `SnackBar`.
+  /// - [message]: The info message content.
   static void showInfo(BuildContext context, String message) {
     show(
       context,
-      title: 'Información',
+      title: 'Info',
       message: message,
       contentType: ContentType.help,
     );

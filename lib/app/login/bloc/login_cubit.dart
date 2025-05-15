@@ -9,39 +9,44 @@ import 'package:ccl_app/domain/usecases/login/login_usecase.dart';
 
 part 'login_state.dart';
 
-/// [LoginCubit] gestiona la lógica del estado para el proceso de inicio de sesión.
+/// [LoginCubit] manages the state logic for the login process.
 ///
-/// Utiliza el patrón BLoC (Cubit) para manejar diferentes estados relacionados
-/// con el login: inicialización, éxito, fallo y visibilidad de la contraseña.
+/// It uses the BLoC (Cubit) pattern to handle different login-related states:
+/// initialization, success, failure, and password visibility toggle.
 ///
-/// También valida el formato del correo electrónico y encripta la contraseña
-/// usando SHA-256 antes de enviar las credenciales.
+/// It also validates the email format and hashes the password using SHA-256
+/// before sending the credentials to the use case.
 @injectable
 class LoginCubit extends Cubit<LoginState> {
-  /// Constructor que inyecta la dependencia del caso de uso de login.
+  /// Constructs a [LoginCubit] and injects the login use case dependency.
   ///
-  /// Requiere una instancia de [LoginUseCase].
+  /// Requires an instance of [LoginUseCase].
   LoginCubit(this._loginUseCase) : super(LoginInit());
 
+  /// The use case responsible for user authentication.
   final LoginUseCase _loginUseCase;
 
-  /// Bandera que indica si la contraseña está visible o no.
+  /// Flag that determines whether the password is visible in the UI.
   bool _isPasswordVisible = false;
 
-  /// Simula una carga inicial antes de emitir el estado inicial del login.
+  /// Simulates an initial loading delay before emitting the login initial state.
   ///
-  /// Útil para pantallas de presentación o splash.
+  /// Useful for splash screens or introductory animations.
   Future<void> start() async {
     await Future.delayed(const Duration(seconds: 3));
     emit(LoginInit());
   }
 
-  /// Intenta iniciar sesión con las credenciales proporcionadas.
+  /// Attempts to log in with the provided credentials.
   ///
-  /// - Valida que el email tenga un formato válido usando [StringExtension.isValidEmail].
-  /// - Encripta la contraseña con SHA-256 mediante [StringExtension.hashPassword].
-  /// - Emite [LoginSucceeded] si el login es exitoso.
-  /// - Emite [LoginFailed] si falla la validación o el login.
+  /// - Validates that the email has a proper format using [StringExtension.isValidEmail].
+  /// - Hashes the password using SHA-256 via [StringExtension.hashPassword].
+  /// - Emits [LoginSucceeded] if authentication is successful.
+  /// - Emits [LoginFailed] on validation or authentication failure.
+  ///
+  /// Parameters:
+  /// - [email]: The user’s input email address.
+  /// - [password]: The plain password that will be hashed before use.
   Future<void> login(String email, String password) async {
     if (email.isValidEmail()) {
       final params = LoginParams(
@@ -51,17 +56,18 @@ class LoginCubit extends Cubit<LoginState> {
 
       Either<Failure, User> result = await _loginUseCase(params);
       result.fold(
-        (failure) => emit(LoginFailed()),
-        (user) => emit(LoginSucceeded()),
+            (failure) => emit(LoginFailed()),
+            (user) => emit(LoginSucceeded()),
       );
     } else {
       emit(LoginFailed());
     }
   }
 
-  /// Cambia el estado de visibilidad de la contraseña.
+  /// Toggles the password visibility state in the UI.
   ///
-  /// Alterna entre visible y oculto y emite [LoginPassword] con el nuevo valor.
+  /// Switches between hidden and visible password states and emits
+  /// a [LoginPassword] state with the updated visibility flag.
   void togglePasswordVisibility() {
     _isPasswordVisible = !_isPasswordVisible;
     emit(LoginPassword(isPasswordVisible: _isPasswordVisible));

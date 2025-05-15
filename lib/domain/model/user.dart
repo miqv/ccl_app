@@ -1,13 +1,39 @@
 import 'package:equatable/equatable.dart';
 
-/// Modelo que representa a un usuario dentro de la aplicación.
+/// Represents a user entity within the CCL application domain.
 ///
-/// Utiliza Equatable para facilitar la comparación de instancias,
-/// especialmente útil para tests o patrones como Bloc.
+/// This model encapsulates the identity and credentials of a user.
+/// It uses `Equatable` to enable value-based equality, which is especially useful
+/// for testing and state comparison in Bloc or Cubit patterns.
+///
+/// ### Fields:
+/// - [id] *(optional)*: Unique identifier for the user (may be null before DB insertion).
+/// - [firstName]: The user's first name (required).
+/// - [lastName]: The user's last name (required).
+/// - [email]: The user's email address (required).
+/// - [password]: The user's password (required; should be encrypted in production).
+///
+/// ### Features:
+/// - `copyWith` method for immutability and state updates.
+/// - `toMap` method for serialization (e.g., for database or API usage).
+/// - Equatable integration for value comparison.
+///
+/// ### Example Usage:
+/// ```dart
+/// final user = User(
+///   firstName: 'Alice',
+///   lastName: 'Smith',
+///   email: 'alice@example.com',
+///   password: 'secure123',
+/// );
+///
+/// final updatedUser = user.copyWith(lastName: 'Johnson');
+/// final json = user.toMap();
+/// ```
 class User extends Equatable {
-  /// Constructor constante para la clase [User].
+  /// Creates a [User] instance.
   ///
-  /// El campo [id] es opcional, los demás son obligatorios.
+  /// [id] is optional (null if not yet persisted), others are required.
   const User({
     this.id,
     required this.firstName,
@@ -16,34 +42,34 @@ class User extends Equatable {
     required this.password,
   });
 
-  /// Identificador único del usuario (puede ser nulo si aún no está en base de datos).
+  /// Unique identifier of the user (nullable).
   final int? id;
 
-  /// Nombre del usuario.
+  /// User's first name.
   final String firstName;
 
-  /// Apellido del usuario.
+  /// User's last name.
   final String lastName;
 
-  /// Dirección de correo electrónico del usuario.
+  /// User's email address.
   final String email;
 
-  /// Contraseña del usuario (debería estar encriptada si se usa en producción).
+  /// User's password.
   final String password;
 
-  /// Sobrescribe `props` para permitir la comparación por valor con Equatable.
+  /// Equatable props for enabling value equality.
   @override
   List<Object?> get props => [
-        id,
-        firstName,
-        lastName,
-        email,
-        password,
-      ];
+    id,
+    firstName,
+    lastName,
+    email,
+    password,
+  ];
 
-  /// Crea una copia del usuario actual con campos opcionalmente modificados.
+  /// Creates a copy of the current user with updated fields.
   ///
-  /// Útil para mantener la inmutabilidad del estado.
+  /// Useful for immutable state management.
   User copyWith({
     int? id,
     String? firstName,
@@ -60,9 +86,9 @@ class User extends Equatable {
     );
   }
 
-  /// Convierte la instancia de [User] a un mapa (JSON serializable).
+  /// Converts the user instance into a map.
   ///
-  /// Ideal para interacciones con bases de datos o APIs.
+  /// Useful for database insertion or API serialization.
   Map<String, dynamic> toMap() {
     return {
       'id': id,

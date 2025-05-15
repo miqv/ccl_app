@@ -12,6 +12,13 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../core/utils.dart';
 
+/// Pruebas widget de la pantalla de login:
+/// - Verifica que todos los elementos principales se rendericen correctamente.
+/// - Simula errores de login para validar comportamiento del SnackBar.
+/// - Asegura que el método de login se invoque con credenciales válidas.
+///
+/// Usa `MockCubit` de `mocktail` y `bloc_test` para emular el comportamiento del cubit.
+
 class MockedLoginCubit extends MockCubit<LoginState> implements LoginCubit {}
 
 class FakedLoginState extends Fake implements LoginState {}

@@ -92,20 +92,22 @@ void main() async {
     tearDown(() => GetIt.instance.reset());
 
     testWidgets(
-      'When $RegisterSucceeded is issued, the success SnackBar is displayed.',
-      (WidgetTester tester) async {
-        when(() => cubit.state).thenReturn(RegisterInit());
-        await tester.pumpWidget(testableWidget);
+        'When $RegisterFailed state is emitted, '
+        'Then a snack bar is shown with a error message',
+        (WidgetTester tester) async {
+      when(() => cubit.state).thenReturn(RegisterFailed());
+      await tester.pumpWidget(testableWidget);
 
-        whenListen(
-          cubit,
-          Stream.fromIterable([RegisterSucceeded()]),
-        );
-        await tester.pumpAndSettle();
+      whenListen(
+        cubit,
+        Stream.value(RegisterFailed()),
+      );
+      await tester.pumpAndSettle();
 
-        expect(find.text(LocaleKeys.register.succeededMessage.tr()),
-            findsOneWidget);
-      },
-    );
+      expect(
+        find.text(LocaleKeys.register.failedMessage.tr()),
+        findsOneWidget,
+      );
+    });
   });
 }

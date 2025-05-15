@@ -1,4 +1,5 @@
 import 'package:ccl_app/core/components/snackbar_service.dart';
+import 'package:ccl_app/core/dimens.dart';
 import 'package:ccl_app/core/translations/localization_constants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -10,7 +11,11 @@ import 'package:ccl_app/core/routes/routes.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Pantalla principal de Login que utiliza `LoginCubit` para gestionar su estado.
+/// Main login screen that uses [LoginCubit] to manage its state.
+///
+/// This widget is annotated with [RoutePage] to support auto routing.
+/// It provides the [LoginCubit] to the widget tree using [BlocProvider],
+/// initializing it with the `start()` method.
 @RoutePage()
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -24,7 +29,10 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-/// Contenido de la pantalla de Login, separado para mayor modularidad.
+/// Internal stateful widget that represents the content of the login screen.
+///
+/// Handles UI interactions such as form inputs and triggers login actions
+/// through the [LoginCubit].
 class _LoginScreen extends StatefulWidget {
   const _LoginScreen({Key? key}) : super(key: key);
 
@@ -49,7 +57,7 @@ class _LoginScreenState extends State<_LoginScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(LocaleKeys.login.title.tr())),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(Dimen.regular),
         child: BlocConsumer<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is LoginInit) {
@@ -69,6 +77,7 @@ class _LoginScreenState extends State<_LoginScreen> {
                 context,
                 LocaleKeys.login.succeededMessage.tr(),
               );
+              context.router.navigate(const NavigationScreenRoute());
             }
 
             if (state is LoginPassword) {
@@ -101,7 +110,9 @@ class _LoginScreenState extends State<_LoginScreen> {
     );
   }
 
-  /// Campo para ingresar el email del usuario.
+  /// Builds the email input field for user authentication.
+  ///
+  /// Uses [TextFormField] and supports localization.
   Widget _buildEmailField() {
     return TextFormField(
       controller: emailController,
@@ -114,7 +125,10 @@ class _LoginScreenState extends State<_LoginScreen> {
     );
   }
 
-  /// Campo para ingresar la contraseña con posibilidad de mostrar u ocultar el texto.
+  /// Builds the password input field with visibility toggle.
+  ///
+  /// Uses [TextField] with [LoginCubit.togglePasswordVisibility] to control
+  /// the visibility of the password field.
   Widget _buildPasswordField(LoginCubit cubit) {
     return TextField(
       controller: passwordController,
@@ -133,7 +147,9 @@ class _LoginScreenState extends State<_LoginScreen> {
     );
   }
 
-  /// Botón de acción para iniciar sesión.
+  /// Builds the login button that initiates the login process.
+  ///
+  /// Invokes [LoginCubit.login] with the values from the input fields.
   Widget _buildLoginButton(LoginCubit cubit) {
     return ElevatedButton(
       onPressed: () {
@@ -148,7 +164,9 @@ class _LoginScreenState extends State<_LoginScreen> {
     );
   }
 
-  /// Línea inferior que redirige al usuario al registro.
+  /// Builds the registration redirect row at the bottom of the screen.
+  ///
+  /// Provides a prompt and a button to navigate to the registration screen.
   Widget _buildRegisterText(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

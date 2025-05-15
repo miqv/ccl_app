@@ -1,95 +1,97 @@
-# Nombre del proyecto
+# Project name
 name: ccl_app
 
-# Descripción corta del proyecto
+# Short project description
 description: "A new Flutter project."
 
-# Evita que se publique accidentalmente en pub.dev
+# Prevent accidental publishing to pub.dev
 publish_to: 'none'
 
-# Versión de la app: major.minor.patch+build
+# App version: major.minor.patch+build
 version: 1.0.0+1
 
-# SDK mínimo requerido
+# Minimum required Dart SDK
 environment:
   sdk: ^3.6.0
 
 dependencies:
+  # Flutter SDK
   flutter:
     sdk: flutter
 
-  # Iconos estilo iOS
+  # iOS-style icons
   cupertino_icons: ^1.0.8
 
-  # Internacionalización fácil (traducciones)
+  # Easy localization and translation support
   easy_localization: ^3.0.7+1
 
-  # Navegación declarativa con generación de rutas
+  # Declarative navigation with automatic route generation
   auto_route: ^10.0.1
 
-  # Inyección de dependencias (service locator)
+  # Dependency injection service locator
   get_it: ^8.0.3
 
-  # Complemento para get_it: generación automática
+  # Extension for get_it that enables code generation
   injectable: ^2.5.0
 
-  # Comparaciones por valor (ideal para estados)
+  # Value-based equality (ideal for state classes)
   equatable: ^2.0.7
 
-  # Manejo de estados con BLoC
+  # State management using the BLoC pattern
   flutter_bloc: ^9.1.0
 
-  # Programación funcional: Either, Option, etc.
+  # Functional programming tools like Either and Option
   dartz: ^0.10.1
 
-  # Pantalla de splash nativa automática
+  # Auto splash screen generation for Android and iOS
   flutter_native_splash: ^2.4.4
 
-  # Acceso a rutas del sistema (documentos, etc.)
+  # File system path utilities (e.g. documents directory)
   path_provider: ^2.1.5
 
-  # SQLite: base de datos local
+  # SQLite: local persistent storage
   sqflite: ^2.4.1
 
-  # Snackbars personalizados con contenido visual atractivo
+  # Custom and visually styled snackbars
   awesome_snackbar_content: ^0.1.5
 
-  # Funciones de hash y seguridad (ej. para contraseñas)
+  # Cryptographic utilities (e.g. SHA256 for password hashing)
   crypto: ^3.0.6
 
-  # Framework de mocking para pruebas
+  # Mocking framework for unit/widget testing
   mocktail: ^1.0.4
 
 dev_dependencies:
+  # Flutter's built-in testing library
   flutter_test:
     sdk: flutter
 
-  # Generador para auto_route
+  # Route generator for auto_route
   auto_route_generator: ^10.0.1
 
-  # Utilidades para pruebas de BLoC
+  # Tools for testing BLoC logic
   bloc_test: ^10.0.0
 
-  # Motor de generación de código para injectable y auto_route
+  # Code generation engine used by auto_route and injectable
   build_runner:
 
-  # Reglas de linting recomendadas por Flutter
+  # Flutter's recommended linter rules
   flutter_lints: ^5.0.0
 
-  # Generador para injectable
+  # Generator for injectable dependencies
   injectable_generator:
 
 flutter:
-  # Usa el conjunto de íconos Material
+  # Use Material Design icon set
   uses-material-design: true
 
-  # Recursos de imágenes y base de datos
+  # Declare asset folders
   assets:
-    - assets/images/
-    - assets/database/
+    - assets/images/     # Images (e.g. logo)
+    - assets/database/   # Preloaded or local database files
 
-  # (Opcional) Puedes agregar fuentes personalizadas aquí.
+  # (Optional) You can register custom fonts here.
   # fonts:
-  #   - family: MiFuente
+  #   - family: MyFont
   #     fonts:
-  #       - asset: fonts/MiFuente-Regular.ttf
+  #       - asset: fonts/MyFont-Regular.ttf

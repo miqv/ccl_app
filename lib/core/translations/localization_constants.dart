@@ -3,11 +3,16 @@ abstract class LocaleKeys {
   static ErrorLocaleKeys error = ErrorLocaleKeys();
   static LoginLocaleKeys login = LoginLocaleKeys();
   static RegisterLocaleKeys register = RegisterLocaleKeys();
+  static ProductsLocaleKeys products = ProductsLocaleKeys();
+  static NavigationLocaleKeys navigation = NavigationLocaleKeys();
 }
 
 class GeneralLocaleKeys {
   static const String prefix = "general";
   String get title => '$prefix title';
+  String get close => '$prefix close';
+  String get cancel => '$prefix cancel';
+  String get save => '$prefix save';
 }
 
 class ErrorLocaleKeys {
@@ -46,4 +51,24 @@ class RegisterLocaleKeys {
   String get requiredField => '$prefix requiredField';
   String get emailFieldError => '$prefix emailFieldError';
   String get registerButton => '$prefix registerButton';
+}
+
+class ProductsLocaleKeys {
+  static const String prefix = "products";
+  String get labelTextSearch => '$prefix labelTextSearch';
+  String get noResultsFound => '$prefix noResultsFound';
+  String get tooltipProduct => '$prefix tooltipProduct';
+  String get titleInput => '$prefix titleInput';
+  String get titleOutput => '$prefix titleOutput';
+  String get titleStock => '$prefix titleStock';
+  String get addProductName => '$prefix addProductName';
+  String get errorProductName => '$prefix errorProductName';
+  String get addProductDescription => '$prefix addProductDescription';
+  String get errorProductDescription => '$prefix errorProductDescription';
+}
+
+class NavigationLocaleKeys {
+  static const String prefix = "navigation";
+  String get titleProducts => '$prefix titleProducts';
+  String get titleInputOutput => '$prefix titleInputOutput';
 }

@@ -1,36 +1,41 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
-/// Extensión para la clase [String] que agrega funcionalidades adicionales.
+/// Extension on [String] providing additional utilities.
+///
+/// This extension adds common string-related functionality such as password
+/// hashing and email format validation. Useful in scenarios involving user
+/// authentication and form input validation.
 extension StringExtension on String {
-  /// Genera un hash SHA-256 del contenido de la cadena.
+  /// Hashes the string using the SHA-256 algorithm.
   ///
-  /// Esta función es útil para el almacenamiento seguro de contraseñas,
-  /// ya que transforma una cadena en su representación encriptada
-  /// utilizando el algoritmo [SHA-256].
+  /// Typically used to securely transform a password into its hashed
+  /// representation for secure storage.
   ///
-  /// Ejemplo de uso:
+  /// Example:
   /// ```dart
-  /// String hashed = 'mi_contraseña_segura'.hashPassword();
+  /// String hashed = 'my_secure_password'.hashPassword();
   /// ```
   ///
-  /// Retorna una cadena hexadecimal que representa el hash generado.
+  /// Returns a hexadecimal string representing the hashed value.
   String hashPassword() {
-    final bytes = utf8.encode(this); // Convierte la cadena a bytes UTF-8
-    final digest = sha256.convert(bytes); // Aplica el algoritmo SHA-256
-    return digest.toString(); // Devuelve el hash como string hexadecimal
+    final bytes = utf8.encode(this); // Convert the string to UTF-8 bytes
+    final digest = sha256.convert(bytes); // Apply SHA-256 hashing
+    return digest.toString(); // Return the result as a hexadecimal string
   }
 
-  /// Valida si el contenido del string es un correo electrónico válido.
+  /// Validates whether the string is a well-formed email address.
   ///
-  /// Utiliza una expresión regular para validar el formato de un correo,
-  /// incluyendo letras, números, puntos, guiones y dominios válidos.
+  /// Uses a regular expression to match valid email formats including
+  /// letters, numbers, dots, dashes, and domains.
   ///
-  /// Ejemplo:
+  /// Example:
   /// ```dart
-  /// 'correo@ejemplo.com'.isValidEmail(); // true
-  /// 'correo@mal'.isValidEmail(); // false
+  /// 'user@example.com'.isValidEmail(); // true
+  /// 'invalid@email'.isValidEmail(); // false
   /// ```
+  ///
+  /// Returns `true` if the string matches a valid email format, `false` otherwise.
   bool isValidEmail() {
     final emailRegExp = RegExp(
       r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$",

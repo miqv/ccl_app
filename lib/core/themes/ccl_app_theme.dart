@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// Clase que define los temas de estilo visual para la aplicación CCL.
+/// Defines the light and dark visual themes for the CCL application.
 ///
-/// Esta clase contiene dos temas:
-/// - [lightTheme] para modo claro.
-/// - [darkTheme] para modo oscuro.
+/// This class centralizes the configuration of color schemes, typography,
+/// AppBar styles, button themes, and scaffold backgrounds to ensure a
+/// consistent look and feel across the app.
 ///
-/// Ambos temas configuran colores principales, fondo, AppBar, esquemas de color,
-/// tipografías y estilos de botones (ElevatedButton y TextButton) para mantener
-/// consistencia visual en toda la aplicación.
+/// It includes:
+/// - [lightTheme] for light mode.
+/// - [darkTheme] for dark mode.
 class CclAppThemeData {
-  /// Tema claro de la aplicación.
+  /// Light theme configuration.
   ///
-  /// Paleta de colores:
-  /// - Primario: Azul oscuro (`#0A1D37`)
-  /// - Fondo: Blanco
-  /// - AppBar: Azul oscuro con texto blanco
-  /// - Superficie: Gris claro (`#F5F7FA`)
-  /// - Texto: Azul oscuro y negro con alta legibilidad
+  /// Color palette:
+  /// - Primary: Dark blue (`#0A1D37`)
+  /// - Background: White
+  /// - AppBar: Dark blue with white text
+  /// - Surface: Light gray (`#F5F7FA`)
+  /// - Text: Dark blue and black with high readability
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: const Color(0xFF0A1D37),
@@ -63,14 +63,14 @@ class CclAppThemeData {
     ),
   );
 
-  /// Tema oscuro de la aplicación.
+  /// Dark theme configuration.
   ///
-  /// Paleta de colores:
-  /// - Primario: Azul oscuro (`#0A1D37`)
-  /// - Fondo: Gris oscuro (`#121212`)
-  /// - AppBar: Azul oscuro con texto blanco
-  /// - Superficie: Gris medio (`#1E1E1E`)
-  /// - Texto: Blanco sólido y con opacidad
+  /// Color palette:
+  /// - Primary: Dark blue (`#0A1D37`)
+  /// - Background: Dark gray (`#121212`)
+  /// - AppBar: Dark blue with white text
+  /// - Surface: Medium gray (`#1E1E1E`)
+  /// - Text: Solid white and white with opacity
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: const Color(0xFF0A1D37),

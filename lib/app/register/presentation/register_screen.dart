@@ -1,4 +1,5 @@
 import 'package:ccl_app/core/components/snackbar_service.dart';
+import 'package:ccl_app/core/routes/routes.gr.dart';
 import 'package:ccl_app/core/translations/localization_constants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:ccl_app/app/register/bloc/register_cubit.dart';
@@ -9,7 +10,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Pantalla de registro de usuario, inyecta el [RegisterCubit] usando getIt.
+/// Entry point screen for user registration.
+/// Provides the [RegisterCubit] to the widget tree via dependency injection.
 @RoutePage()
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -23,7 +25,8 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-/// Stateful widget que construye el formulario de registro.
+/// Main registration form widget.
+/// Manages user input, validation feedback, password visibility, and registration.
 class _RegisterScreen extends StatefulWidget {
   const _RegisterScreen();
 
@@ -32,13 +35,13 @@ class _RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<_RegisterScreen> {
-  // Controladores para los campos de texto
+  // Controllers for form fields
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 
-  // Estados de la UI
+  // UI flags
   bool _isPasswordVisible = false;
   bool _isValidatedFields = false;
 
@@ -72,7 +75,7 @@ class _RegisterScreenState extends State<_RegisterScreen> {
               SnackbarService.showError(
                 context,
                 state.message ==
-                        LocaleKeys.register.failedMessageExistingEmail.tr()
+                    LocaleKeys.register.failedMessageExistingEmail.tr()
                     ? state.message!
                     : LocaleKeys.register.failedMessage.tr(),
               );
@@ -81,6 +84,7 @@ class _RegisterScreenState extends State<_RegisterScreen> {
                 context,
                 LocaleKeys.register.succeededMessage.tr(),
               );
+              context.router.navigate(const NavigationScreenRoute());
             } else if (state is RegisterPassword) {
               setState(() => _isPasswordVisible = state.isPasswordVisible);
             } else if (state is RegisterValidatedFields) {
@@ -100,7 +104,7 @@ class _RegisterScreenState extends State<_RegisterScreen> {
                     keyboardType: TextInputType.name,
                     onChanged: cubit.setFirstName,
                     showError:
-                        _isValidatedFields && _firstNameController.text.isEmpty,
+                    _isValidatedFields && _firstNameController.text.isEmpty,
                   ),
                   Spacing.regular,
                   _buildTextField(
@@ -109,7 +113,7 @@ class _RegisterScreenState extends State<_RegisterScreen> {
                     keyboardType: TextInputType.name,
                     onChanged: cubit.setLastName,
                     showError:
-                        _isValidatedFields && _lastNameController.text.isEmpty,
+                    _isValidatedFields && _lastNameController.text.isEmpty,
                   ),
                   Spacing.regular,
                   _buildTextField(
@@ -118,16 +122,16 @@ class _RegisterScreenState extends State<_RegisterScreen> {
                     keyboardType: TextInputType.emailAddress,
                     onChanged: cubit.setEmail,
                     showError:
-                        _isValidatedFields && _emailController.text.isEmpty,
+                    _isValidatedFields && _emailController.text.isEmpty,
                     customError: _isValidatedFields &&
-                            !_emailController.text.isValidEmail()
+                        !_emailController.text.isValidEmail()
                         ? LocaleKeys.register.emailFieldError.tr()
                         : null,
                   ),
                   Spacing.regular,
                   _buildPasswordField(cubit),
                   Spacing.large,
-                  _buildLoginButton(cubit),
+                  _buildRegisterButton(cubit),
                 ],
               ),
             );
@@ -137,7 +141,7 @@ class _RegisterScreenState extends State<_RegisterScreen> {
     );
   }
 
-  /// Crea un campo de texto con estilo uniforme y validación de errores.
+  /// Generic text field widget with label and optional error handling.
   Widget _buildTextField({
     required TextEditingController controller,
     required String label,
@@ -153,14 +157,14 @@ class _RegisterScreenState extends State<_RegisterScreen> {
         labelText: label,
         border: const OutlineInputBorder(),
         errorText:
-            (showError ? LocaleKeys.register.requiredField.tr() : null) ??
-                customError,
+        (showError ? LocaleKeys.register.requiredField.tr() : null) ??
+            customError,
       ),
       onChanged: onChanged,
     );
   }
 
-  /// Crea un campo de contraseña con botón de visibilidad.
+  /// Password input field with toggle visibility button and validation.
   Widget _buildPasswordField(RegisterCubit cubit) {
     return TextFormField(
       controller: _passwordController,
@@ -182,8 +186,8 @@ class _RegisterScreenState extends State<_RegisterScreen> {
     );
   }
 
-  /// Botón de acción para crear usuario.
-  Widget _buildLoginButton(RegisterCubit cubit) {
+  /// Submit button to trigger registration process.
+  Widget _buildRegisterButton(RegisterCubit cubit) {
     return ElevatedButton(
       onPressed: cubit.register,
       style: ElevatedButton.styleFrom(

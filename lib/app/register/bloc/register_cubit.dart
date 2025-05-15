@@ -9,12 +9,13 @@ import 'package:ccl_app/domain/usecases/user/new_user_usecase.dart';
 
 part 'register_state.dart';
 
-/// [RegisterCubit] gestiona el estado de la pantalla de registro de usuario.
-/// Controla la visibilidad de la contraseña, la validación de campos y
-/// la ejecución del caso de uso de registro de nuevo usuario.
+/// [RegisterCubit] manages the state of the user registration screen.
+///
+/// It controls password visibility, field validation, and the execution
+/// of the user registration use case.
 @injectable
 class RegisterCubit extends Cubit<RegisterState> {
-  /// Constructor que inyecta el caso de uso necesario.
+  /// Creates a [RegisterCubit] with the required [NewUserUseCase] dependency.
   RegisterCubit(this._newUserUseCase) : super(RegisterInit());
 
   final NewUserUseCase _newUserUseCase;
@@ -27,38 +28,39 @@ class RegisterCubit extends Cubit<RegisterState> {
   String? _email;
   String? _password;
 
-  /// Reinicia el estado del formulario.
+  /// Resets the registration form state to its initial state.
   Future<void> start() async {
     emit(RegisterInit());
   }
 
-  /// Asigna el primer nombre y valida si ya se solicitó validación previa.
+  /// Updates the first name value and triggers validation if needed.
   void setFirstName(String firstName) {
     _firstName = firstName.trim();
     _emitValidationIfNeeded();
   }
 
-  /// Asigna el apellido y valida si ya se solicitó validación previa.
+  /// Updates the last name value and triggers validation if needed.
   void setLastName(String lastName) {
     _lastName = lastName.trim();
     _emitValidationIfNeeded();
   }
 
-  /// Asigna el correo electrónico y valida si ya se solicitó validación previa.
+  /// Updates the email value and triggers validation if needed.
   void setEmail(String email) {
     _email = email.trim();
     _emitValidationIfNeeded();
   }
 
-  /// Asigna la contraseña (encriptada) y valida si ya se solicitó validación previa.
+  /// Updates the password value (hashed) and triggers validation if needed.
   void setPassword(String password) {
     _password = password.hashPassword();
     _emitValidationIfNeeded();
   }
 
-  /// Ejecuta el proceso de registro si los campos son válidos.
+  /// Attempts to register the user if all required fields are valid.
+  ///
+  /// Emits [RegisterSucceeded] on success or [RegisterFailed] on failure.
   Future<void> register() async {
-    // Validación previa de campos
     if (_areFieldsValid()) {
       final user = User(
         firstName: _firstName!,
@@ -72,7 +74,6 @@ class RegisterCubit extends Cubit<RegisterState> {
       result.fold(
             (failure) => emit(RegisterFailed(message: failure.message)),
             (registeredUser) {
-          // Validación adicional del usuario registrado
           if (registeredUser.firstName == _firstName) {
             emit(RegisterSucceeded());
           } else {
@@ -86,13 +87,15 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
   }
 
-  /// Alterna la visibilidad de la contraseña.
+  /// Toggles the password visibility.
+  ///
+  /// Emits a [RegisterPassword] state with the updated visibility status.
   void togglePasswordVisibility() {
     _isPasswordVisible = !_isPasswordVisible;
     emit(RegisterPassword(isPasswordVisible: _isPasswordVisible));
   }
 
-  /// Valida si todos los campos requeridos son válidos.
+  /// Checks if all required fields are filled in and valid.
   bool _areFieldsValid() {
     return _firstName?.isNotEmpty == true &&
         _lastName?.isNotEmpty == true &&
@@ -100,7 +103,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         _password?.isNotEmpty == true;
   }
 
-  /// Emite el estado de validación si ya se ha solicitado.
+  /// Emits a validation state if validation has been previously requested.
   void _emitValidationIfNeeded() {
     if (_isValidatedFields) {
       emit(RegisterValidatedFields());

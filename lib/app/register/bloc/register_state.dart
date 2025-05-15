@@ -1,42 +1,52 @@
 part of 'register_cubit.dart';
 
-/// Clase base abstracta para representar los estados del `RegisterCubit`.
+/// Abstract base class representing the state of [RegisterCubit].
 abstract class RegisterState {
   const RegisterState();
 }
 
-/// Clase base para estados que deben implementar comparación por valor usando Equatable.
-abstract class RegisterStateEquatable extends RegisterState with EquatableMixin {
+/// Abstract base class for states that require value comparison via [Equatable].
+abstract class RegisterStateEquatable extends RegisterState
+    with EquatableMixin {
   const RegisterStateEquatable();
 
   @override
   List<Object> get props => <Object>[];
 }
 
-/// Estado inicial del formulario de registro.
+/// Initial state of the registration form.
+///
+/// Typically emitted when the form is first loaded or reset.
 class RegisterInit extends RegisterStateEquatable {}
 
-/// Estado que indica que el registro fue exitoso.
+/// State indicating that the user registration was successful.
+///
+/// Triggers success feedback and navigation in the UI.
 class RegisterSucceeded extends RegisterState {}
 
-/// Estado que se emite cuando los campos del formulario necesitan validación.
-/// Se utiliza para mostrar errores en los inputs de la UI.
+/// State indicating that the form fields need validation.
+///
+/// Commonly used to show validation errors in the UI inputs.
 class RegisterValidatedFields extends RegisterState {}
 
-/// Estado que indica que el registro falló.
-/// Puede incluir un mensaje opcional de error para mostrar al usuario.
+/// State indicating that the registration process failed.
+///
+/// May include an optional error [message] to inform the user.
 class RegisterFailed extends RegisterState {
+  /// Optional error message to display to the user.
   final String? message;
 
-  /// [message] es un mensaje opcional con detalles del error.
+  /// Creates a [RegisterFailed] state with an optional [message].
   RegisterFailed({this.message});
 }
 
-/// Estado que se emite cuando se cambia la visibilidad de la contraseña.
-/// Se usa para mostrar u ocultar el texto del campo de contraseña en la UI.
+/// State emitted when the password visibility changes.
+///
+/// Used to show or hide the password input in the UI.
 class RegisterPassword extends RegisterState {
-  const RegisterPassword({required this.isPasswordVisible});
-
-  /// Indica si la contraseña debe mostrarse o no en texto plano.
+  /// Whether the password should be shown in plain text.
   final bool isPasswordVisible;
+
+  /// Creates a [RegisterPassword] state with the given visibility status.
+  const RegisterPassword({required this.isPasswordVisible});
 }

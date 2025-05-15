@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
@@ -7,48 +6,50 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 
-/// Cliente de base de datos SQLite para la aplicación CCL.
+/// SQLite database client for the CCL application.
 ///
-/// Esta clase proporciona métodos para inicializar, insertar, consultar,
-/// actualizar y eliminar datos de una base de datos local.
+/// This class provides helper methods to initialize and operate
+/// on a local SQLite database, including inserting, querying, updating,
+/// and deleting records.
 ///
-/// También se encarga de copiar una base de datos preconstruida desde los assets
-/// al almacenamiento local del dispositivo en su primer uso.
+/// It also handles the one-time copying of a pre-built database
+/// from the app assets to the device's local storage.
 ///
-/// Utiliza:
-/// - `sqflite` para el manejo de la base de datos.
-/// - `dartz` para manejar resultados con `Either`, permitiendo errores controlados.
-/// - `injectable` para inyección de dependencias.
+/// Uses:
+/// - `sqflite` for database access.
+/// - `dartz` for safe error handling via `Either`.
+/// - `injectable` for dependency injection.
 @injectable
 class DatabaseClient {
   static const _databaseName = 'ccl_app_bd.sqlite';
   static const _databasePath = 'assets/database/ccl_app_bd.sqlite';
 
-  /// Instancia única (singleton) del cliente de base de datos.
+  /// Singleton instance of the database client.
   factory DatabaseClient() => instance;
   static final DatabaseClient instance = DatabaseClient._init();
   static Database? _db;
 
   DatabaseClient._init();
 
-  /// Obtiene o inicializa la base de datos.
+  /// Returns the opened database instance.
+  /// If it doesn't exist, it initializes it from the asset file.
   Future<Database> get database async {
     if (_db != null && _db!.isOpen) return _db!;
     _db = await _initDB();
     return _db!;
   }
 
-  /// Inicializa la base de datos desde assets si no existe en almacenamiento local.
+  /// Initializes the database.
+  /// If the database file does not exist in local storage,
+  /// it is copied from the assets.
   Future<Database> _initDB() async {
     final dir = await getApplicationDocumentsDirectory();
     final dbPath = "${dir.path}/$_databaseName";
 
-    // Si ya existe, ábrela
     if (await File(dbPath).exists()) {
       return await openDatabase(dbPath);
     }
 
-    // Si no existe, copia desde assets
     final data = await rootBundle.load(_databasePath);
     final bytes = data.buffer.asUint8List();
     await File(dbPath).writeAsBytes(bytes);
@@ -56,11 +57,11 @@ class DatabaseClient {
     return await openDatabase(dbPath);
   }
 
-  /// Inserta un nuevo registro en la tabla especificada.
+  /// Inserts a new row into the specified [table].
   ///
-  /// Retorna [Right(id)] en caso de éxito o [Left(error)] en caso de error.
-  Future<Either<String, int>> insert(
-      String table, Map<String, dynamic> data) async {
+  /// Returns [Right(id)] with the inserted record's ID on success,
+  /// or [Left(errorMessage)] on failure.
+  Future<Either<String, int>> insert(String table, Map<String, dynamic> data) async {
     try {
       if (data.isEmpty) return Left("No data");
       if (table.isEmpty) return Left("No table");
@@ -73,9 +74,8 @@ class DatabaseClient {
     }
   }
 
-  /// Obtiene todos los registros de la tabla especificada.
-  Future<Either<String, List<Map<String, dynamic>>>> getAll(
-      String table) async {
+  /// Retrieves all rows from the specified [table].
+  Future<Either<String, List<Map<String, dynamic>>>> getAll(String table) async {
     try {
       if (table.isEmpty) return Left("No table");
       final db = await instance.database;
@@ -87,12 +87,12 @@ class DatabaseClient {
     }
   }
 
-  /// Obtiene registros filtrando por un campo específico.
+  /// Retrieves rows from [table] where [field] matches [arg].
   Future<Either<String, List<Map<String, dynamic>>>> get(
-    String table,
-    String field,
-    List<Object?> arg,
-  ) async {
+      String table,
+      String field,
+      List<Object?> arg,
+      ) async {
     try {
       if (table.isEmpty) return Left("No table");
       if (field.isEmpty) return Left("No field");
@@ -106,18 +106,17 @@ class DatabaseClient {
     }
   }
 
-  /// Actualiza un registro por ID en la tabla especificada.
+  /// Updates a row by [id] in the specified [table] with new [data].
   Future<Either<String, int>> update(
-    String table,
-    int id,
-    Map<String, dynamic> data,
-  ) async {
+      String table,
+      int id,
+      Map<String, dynamic> data,
+      ) async {
     try {
       if (data.isEmpty) return Left("No data");
       if (table.isEmpty) return Left("No table");
       final db = await instance.database;
-      final result =
-          await db.update(table, data, where: 'id = ?', whereArgs: [id]);
+      final result = await db.update(table, data, where: 'id = ?', whereArgs: [id]);
       await db.close();
       return Right(result);
     } catch (e) {
@@ -125,7 +124,7 @@ class DatabaseClient {
     }
   }
 
-  /// Elimina un registro por ID en la tabla especificada.
+  /// Deletes a row by [id] from the specified [table].
   Future<Either<String, int>> delete(String table, int id) async {
     try {
       if (table.isEmpty) return Left("No table");
@@ -138,20 +137,20 @@ class DatabaseClient {
     }
   }
 
-  /// Ejecuta una consulta SQL directa (como `CREATE`, `DROP`, etc.).
+  /// Executes a raw SQL query (e.g. `CREATE`, `DROP`, etc.).
   Future<Either<String, void>> executeQuery(String query) async {
     try {
       if (query.isEmpty) return Left("No query");
       final db = await instance.database;
-      final result = await db.execute(query);
+      await db.execute(query);
       await db.close();
-      return Right(result);
+      return const Right(null);
     } catch (e) {
       return Left(e.toString());
     }
   }
 
-  /// Verifica si una tabla con el nombre dado existe en la base de datos.
+  /// Checks if a table named [tableName] exists in the database.
   Future<Either<String, bool>> existsTable(String tableName) async {
     try {
       final db = await instance.database;
@@ -161,6 +160,18 @@ class DatabaseClient {
       );
       await db.close();
       return Right(tables.isNotEmpty);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  /// Executes a raw SQL select query and returns the result.
+  Future<Either<String, dynamic>> rawQuery(String query) async {
+    try {
+      final db = await instance.database;
+      final List<Map<String, dynamic>> results = await db.rawQuery(query);
+      await db.close();
+      return Right(results);
     } catch (e) {
       return Left(e.toString());
     }

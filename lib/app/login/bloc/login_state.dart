@@ -1,42 +1,46 @@
 part of 'login_cubit.dart';
 
-/// Clase base abstracta para todos los estados relacionados con el proceso de login.
+/// Abstract base class for all states related to the login process.
 ///
-/// Sirve como tipo común para los estados gestionados por [LoginCubit].
+/// Serves as a common type for the states managed by [LoginCubit].
 abstract class LoginState {
-  /// Constructor constante para garantizar la inmutabilidad.
+  /// Constant constructor to ensure immutability.
   const LoginState();
 }
 
-/// Clase abstracta auxiliar que mezcla [EquatableMixin] para soporte de comparación de estados.
+/// Abstract helper class that mixes in [EquatableMixin] for value comparison.
 ///
-/// Usada como base para estados que requieren comparación por valor.
+/// Used as a base for states that require equality checks.
 abstract class LoginStateEquatable extends LoginState with EquatableMixin {
-  /// Constructor constante para mantener la inmutabilidad.
+  /// Constant constructor for immutability.
   const LoginStateEquatable();
 
   @override
   List<Object> get props => <Object>[];
 }
 
-/// Estado inicial del login, típicamente emitido tras cargar la pantalla.
-/// Extiende [LoginStateEquatable] para permitir la comparación.
+/// Initial login state, typically emitted when the login screen is first loaded.
+///
+/// Extends [LoginStateEquatable] to enable state comparison.
 class LoginInit extends LoginStateEquatable {}
 
-/// Estado emitido cuando el login se realiza correctamente.
-/// Puede ser utilizado para redirigir al usuario a la pantalla principal.
+/// State emitted when the login process completes successfully.
+///
+/// Can be used to navigate the user to the main/home screen.
 class LoginSucceeded extends LoginState {}
 
-/// Estado emitido cuando falla el intento de login.
-/// Puede ser utilizado para mostrar un mensaje de error.
+/// State emitted when the login attempt fails.
+///
+/// Typically used to display an error message to the user.
 class LoginFailed extends LoginState {}
 
-/// Estado que indica si la contraseña está visible u oculta en el formulario.
-/// Este estado es útil para actualizar dinámicamente el campo de contraseña.
+/// State indicating whether the password is currently visible in the form.
+///
+/// Useful for dynamically updating the password field UI.
 class LoginPassword extends LoginState {
-  /// Crea una instancia del estado con el valor actual de visibilidad.
+  /// Creates an instance of [LoginPassword] with the current visibility setting.
   const LoginPassword({required this.isPasswordVisible});
 
-  /// Indica si el texto de la contraseña debe mostrarse como visible.
+  /// Whether the password text should be shown as visible.
   final bool isPasswordVisible;
 }
